@@ -3,11 +3,12 @@
 set -eu
 
 source /etc/borg_exporter.rc
+#debian default
 
-TEXTFILE_COLLECTOR_DIR=/var/lib/node_exporter/textfile_collector
+TEXTFILE_COLLECTOR_DIR=/var/lib/prometheus/node_exporter
 PROM_FILE=$TEXTFILE_COLLECTOR_DIR/bork.prom
 
-TMP_FILE=$PROM_FILE.$$
+TMP_FILE=/tmp/prom-borg.$$
 [ -e $TMP_FILE ] && rm -f $TMP_FILE
 
 HOSTNAME=$(hostname)
@@ -40,6 +41,9 @@ function calc_bytes {
     UNIT=$2
 
     case "$UNIT" in
+        B)
+            echo $NUM 
+            ;;
         kB)
             echo $NUM | awk '{ print $1 * 1024 }'
             ;;
